@@ -59,7 +59,7 @@ const bot = createBot({
 //Handle text commands
 bot.events.messageCreate = async (b, message) => {
   if (message.content === "!neko") {
-    await b.helpers.sendMessage(message.channelId, { content: "にゃーん" });
+    await b.helpers.sendMessage(message.channelId, { content: "meow" });
   } else {
     console.log("unhandled message", message.content);
   }
