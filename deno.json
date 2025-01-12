@@ -14,7 +14,6 @@
   "exclude": [
     ".devcontainer/**",
     "compose.yaml",
-    "Dockerfile",
-    "run.sh"
+    "Dockerfile"
   ]
 }
