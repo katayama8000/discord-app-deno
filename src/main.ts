@@ -152,3 +152,7 @@ bot.events.interactionCreate = async (b, interaction) => {
 // Start the bot
 await registerCommands(GUILD_ID);
 await startBot(bot);
+
+Deno.cron("Continuous Request", "*/2 * * * *", () => {
+  console.log("running...");
+});
