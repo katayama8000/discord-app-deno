@@ -4,7 +4,7 @@ import {
   Intents,
   InteractionResponseTypes,
   startBot,
-} from "./deps.ts";
+} from "https://deno.land/x/discordeno@17.1.0/mod.ts";
 
 console.log("Starting bot...");
 
@@ -20,11 +20,23 @@ if (!DISCORD_TOKEN || !GUILD_ID) {
 const commands: CreateSlashApplicationCommand[] = [
   {
     name: "neko",
-    description: "にゃーんと返します",
+    description: "responds with meow",
   },
   {
-    name: "floridatime",
+    name: "japan",
+    description: "responds with the current time in Japan",
+  },
+  {
+    name: "florida",
     description: "responds with the current time in Florida",
+  },
+  {
+    name: "moufu",
+    description: "responds with a picture of a moufu",
+  },
+  {
+    name: "ikura",
+    description: "responds with the current price of ikura",
   },
 ];
 
@@ -46,18 +58,25 @@ const bot = createBot({
 });
 
 // Handle text commands
-bot.events.messageCreate = async (b, message) => {
-  if (message.content === "!neko") {
-    await b.helpers.sendMessage(message.channelId, { content: "にゃーん" });
-  } else if (message.content === "!floridatime") {
-    const floridaTime = new Date().toLocaleString("en-US", {
-      timeZone: "America/New_ York",
-    });
-    await b.helpers.sendMessage(message.channelId, {
-      content: `The current time in Florida is: ${floridaTime}`,
-    });
-  }
-};
+// bot.events.messageCreate = async (b, message) => {
+//   if (message.content === "!neko") {
+//     await b.helpers.sendMessage(message.channelId, { content: "にゃーん" });
+//   } else if (message.content === "!japan") {
+//     const japanTime = new Date().toLocaleString("en-US", {
+//       timeZone: "Asia/Tokyo",
+//     });
+//     await b.helpers.sendMessage(message.channelId, {
+//       content: japanTime,
+//     });
+//   } else if (message.content === "!florida") {
+//     const floridaTime = new Date().toLocaleString("en-US", {
+//       timeZone: "America/New_ York",
+//     });
+//     await b.helpers.sendMessage(message.channelId, {
+//       content: floridaTime,
+//     });
+//   }
+// };
 
 // Handle slash commands
 bot.events.interactionCreate = async (b, interaction) => {
@@ -71,13 +90,28 @@ bot.events.interactionCreate = async (b, interaction) => {
           {
             type: InteractionResponseTypes.ChannelMessageWithSource,
             data: {
-              content: "にゃーん！！",
+              content: "meow",
             },
           },
         );
         break;
       }
-      case "floridatime": {
+      case "japan": {
+        await b.helpers.sendInteractionResponse(
+          interaction.id,
+          interaction.token,
+          {
+            type: InteractionResponseTypes.ChannelMessageWithSource,
+            data: {
+              content: `The current time in Japan is: ${
+                new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" })
+              }`,
+            },
+          },
+        );
+        break;
+      }
+      case "florida": {
         await b.helpers.sendInteractionResponse(
           interaction.id,
           interaction.token,
@@ -90,6 +124,32 @@ bot.events.interactionCreate = async (b, interaction) => {
                   { timeZone: "America/New_York" },
                 )
               }`,
+            },
+          },
+        );
+        break;
+      }
+      case "moufu": {
+        await b.helpers.sendInteractionResponse(
+          interaction.id,
+          interaction.token,
+          {
+            type: InteractionResponseTypes.ChannelMessageWithSource,
+            data: {
+              content: "https://gyazo.com/394c0fe3876bebb679ced189e0c4bc15",
+            },
+          },
+        );
+        break;
+      }
+      case "ikura": {
+        await b.helpers.sendInteractionResponse(
+          interaction.id,
+          interaction.token,
+          {
+            type: InteractionResponseTypes.ChannelMessageWithSource,
+            data: {
+              content: "https://gyazo.com/40d83420ad0240c53f30d2998b3d2b56",
             },
           },
         );
