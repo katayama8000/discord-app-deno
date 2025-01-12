@@ -1,0 +1,10 @@
+services:
+  discord_app_deno:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: discord_app_deno
+    volumes:
+      - .:/workspace
+    ports:
+      - "8080:8080"
