@@ -34,6 +34,10 @@ const commands: CreateSlashApplicationCommand[] = [
     description: "responds with the current time in Florida",
   },
   {
+    name: "newyork",
+    description: "responds with the current time in New York",
+  },
+  {
     name: "moufu",
     description: "responds with a picture of a moufu",
   },
@@ -110,6 +114,24 @@ bot.events.interactionCreate = async (b, interaction) => {
             type: InteractionResponseTypes.ChannelMessageWithSource,
             data: {
               content: `The current time in Florida is: ${
+                new Date().toLocaleString(
+                  "en-US",
+                  { timeZone: "America/New_York" },
+                )
+              }`,
+            },
+          },
+        );
+        break;
+      }
+      case "newyork": {
+        await b.helpers.sendInteractionResponse(
+          interaction.id,
+          interaction.token,
+          {
+            type: InteractionResponseTypes.ChannelMessageWithSource,
+            data: {
+              content: `The current time in New York is: ${
                 new Date().toLocaleString(
                   "en-US",
                   { timeZone: "America/New_York" },
