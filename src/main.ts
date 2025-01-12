@@ -6,6 +6,10 @@ import {
   startBot,
 } from "https://deno.land/x/discordeno@17.1.0/mod.ts";
 
+Deno.cron("Continuous Request", "*/2 * * * *", () => {
+  console.log("running...");
+});
+
 console.log("Starting bot...");
 
 const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN");
@@ -152,7 +156,3 @@ bot.events.interactionCreate = async (b, interaction) => {
 // Start the bot
 await registerCommands(GUILD_ID);
 await startBot(bot);
-
-Deno.cron("Continuous Request", "*/2 * * * *", () => {
-  console.log("running...");
-});
