@@ -12,8 +12,7 @@ const DISCORD_TOKEN = Deno.env.get("DISCORD_TOKEN");
 const GUILD_ID = Deno.env.get("GUILD_ID");
 
 if (!DISCORD_TOKEN || !GUILD_ID) {
-  console.error("Missing DISCORD_TOKEN or GUILD_ID environment variables.");
-  Deno.exit(1);
+  throw new Error("Missing DISCORD_TOKEN or GUILD_ID environment variables.");
 }
 
 // Define commands
@@ -57,26 +56,14 @@ const bot = createBot({
   },
 });
 
-// Handle text commands
-// bot.events.messageCreate = async (b, message) => {
-//   if (message.content === "!neko") {
-//     await b.helpers.sendMessage(message.channelId, { content: "にゃーん" });
-//   } else if (message.content === "!japan") {
-//     const japanTime = new Date().toLocaleString("en-US", {
-//       timeZone: "Asia/Tokyo",
-//     });
-//     await b.helpers.sendMessage(message.channelId, {
-//       content: japanTime,
-//     });
-//   } else if (message.content === "!florida") {
-//     const floridaTime = new Date().toLocaleString("en-US", {
-//       timeZone: "America/New_ York",
-//     });
-//     await b.helpers.sendMessage(message.channelId, {
-//       content: floridaTime,
-//     });
-//   }
-// };
+//Handle text commands
+bot.events.messageCreate = async (b, message) => {
+  if (message.content === "!neko") {
+    await b.helpers.sendMessage(message.channelId, { content: "にゃーん" });
+  } else {
+    console.log("unhandled message", message.content);
+  }
+};
 
 // Handle slash commands
 bot.events.interactionCreate = async (b, interaction) => {
