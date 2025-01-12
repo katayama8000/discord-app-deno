@@ -1,6 +1,6 @@
 {
   "name": "@katayama8000/discord-app-deno",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "MIT",
   "tasks": {
     "dev": "deno run -A --watch ./src/main.ts"
