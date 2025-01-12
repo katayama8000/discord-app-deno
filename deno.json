@@ -1,20 +1,20 @@
 {
-    "name": "@katayama8000/discord-app-deno",
-    "version": "0.0.1",
-    "license": "MIT",
-    "tasks": {
-        "dev": "deno run -A --watch ./src/main.ts"
-    },
-    "exports": {
-        ".": "./src/main.ts"
-    },
-    "include": [
-        "src/**/*.ts"
-    ],
-    "exclude": [
-        ".devcontainer/**",
-        "compose.yaml",
-        "Dockerfile",
-        "run.sh"
-    ]
+  "name": "@katayama8000/discord-app-deno",
+  "version": "0.0.1",
+  "license": "MIT",
+  "tasks": {
+    "dev": "deno run -A --watch ./src/main.ts"
+  },
+  "exports": {
+    ".": "./src/main.ts"
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    ".devcontainer/**",
+    "compose.yaml",
+    "Dockerfile",
+    "run.sh"
+  ]
 }
