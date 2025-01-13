@@ -30,7 +30,7 @@ const commands: CreateSlashApplicationCommand[] = [
     description: "responds with the current time in Japan",
   },
   {
-    name: "florida(central)",
+    name: "centralFlorida",
     description: "responds with the current time in florida (Central Time)",
   },
   {
@@ -102,7 +102,7 @@ bot.events.interactionCreate = async (b, interaction) => {
         );
         break;
       }
-      case "florida(central)": {
+      case "centralFlorida": {
         await b.helpers.sendInteractionResponse(
           interaction.id,
           interaction.token,
