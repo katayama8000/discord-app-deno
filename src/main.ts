@@ -30,6 +30,10 @@ const commands: CreateSlashApplicationCommand[] = [
     description: "responds with the current time in Japan",
   },
   {
+    name: "cicago",
+    description: "responds with the current time in Cicago",
+  },
+  {
     name: "florida",
     description: "responds with the current time in Florida",
   },
@@ -44,14 +48,6 @@ const commands: CreateSlashApplicationCommand[] = [
   {
     name: "ikura",
     description: "responds with the current price of ikura",
-  },
-  {
-    name: "central",
-    description: "responds with the current time in Central Time",
-  },
-  {
-    name: "cst",
-    description: "responds with the current time in Central Standard Time",
   },
 ];
 
@@ -150,7 +146,7 @@ bot.events.interactionCreate = async (b, interaction) => {
         );
         break;
       }
-      case "central": {
+      case "cicago": {
         await b.helpers.sendInteractionResponse(
           interaction.id,
           interaction.token,
@@ -158,24 +154,6 @@ bot.events.interactionCreate = async (b, interaction) => {
             type: InteractionResponseTypes.ChannelMessageWithSource,
             data: {
               content: `The current time in Central Time is: ${
-                new Date().toLocaleString(
-                  "en-US",
-                  { timeZone: "America/Chicago" },
-                )
-              }`,
-            },
-          },
-        );
-        break;
-      }
-      case "cst": {
-        await b.helpers.sendInteractionResponse(
-          interaction.id,
-          interaction.token,
-          {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: `The current time in Central Standard Time is: ${
                 new Date().toLocaleString(
                   "en-US",
                   { timeZone: "America/Chicago" },
