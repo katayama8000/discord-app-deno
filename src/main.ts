@@ -30,16 +30,8 @@ const commands: CreateSlashApplicationCommand[] = [
     description: "responds with the current time in Japan",
   },
   {
-    name: "cicago",
-    description: "responds with the current time in Cicago",
-  },
-  {
-    name: "florida",
-    description: "responds with the current time in Florida",
-  },
-  {
-    name: "newyork",
-    description: "responds with the current time in New York",
+    name: "florida central",
+    description: "responds with the current time in Florida (Central Time)",
   },
   {
     name: "moufu",
@@ -110,7 +102,7 @@ bot.events.interactionCreate = async (b, interaction) => {
         );
         break;
       }
-      case "florida": {
+      case "florida central": {
         await b.helpers.sendInteractionResponse(
           interaction.id,
           interaction.token,
@@ -121,42 +113,6 @@ bot.events.interactionCreate = async (b, interaction) => {
                 new Date().toLocaleString(
                   "en-US",
                   { timeZone: "America/New_York" },
-                )
-              }`,
-            },
-          },
-        );
-        break;
-      }
-      case "newyork": {
-        await b.helpers.sendInteractionResponse(
-          interaction.id,
-          interaction.token,
-          {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: `The current time in New York is: ${
-                new Date().toLocaleString(
-                  "en-US",
-                  { timeZone: "America/New_York" },
-                )
-              }`,
-            },
-          },
-        );
-        break;
-      }
-      case "cicago": {
-        await b.helpers.sendInteractionResponse(
-          interaction.id,
-          interaction.token,
-          {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: `The current time in Central Time is: ${
-                new Date().toLocaleString(
-                  "en-US",
-                  { timeZone: "America/Chicago" },
                 )
               }`,
             },
