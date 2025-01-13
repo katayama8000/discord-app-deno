@@ -45,6 +45,14 @@ const commands: CreateSlashApplicationCommand[] = [
     name: "ikura",
     description: "responds with the current price of ikura",
   },
+  {
+    name: "central",
+    description: "responds with the current time in Central Time",
+  },
+  {
+    name: "cst",
+    description: "responds with the current time in Central Standard Time",
+  },
 ];
 
 async function registerCommands(guildId: string) {
@@ -135,6 +143,42 @@ bot.events.interactionCreate = async (b, interaction) => {
                 new Date().toLocaleString(
                   "en-US",
                   { timeZone: "America/New_York" },
+                )
+              }`,
+            },
+          },
+        );
+        break;
+      }
+      case "central": {
+        await b.helpers.sendInteractionResponse(
+          interaction.id,
+          interaction.token,
+          {
+            type: InteractionResponseTypes.ChannelMessageWithSource,
+            data: {
+              content: `The current time in Central Time is: ${
+                new Date().toLocaleString(
+                  "en-US",
+                  { timeZone: "America/Chicago" },
+                )
+              }`,
+            },
+          },
+        );
+        break;
+      }
+      case "cst": {
+        await b.helpers.sendInteractionResponse(
+          interaction.id,
+          interaction.token,
+          {
+            type: InteractionResponseTypes.ChannelMessageWithSource,
+            data: {
+              content: `The current time in Central Standard Time is: ${
+                new Date().toLocaleString(
+                  "en-US",
+                  { timeZone: "America/Chicago" },
                 )
               }`,
             },
