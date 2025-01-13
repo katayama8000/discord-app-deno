@@ -1,11 +1,14 @@
 import {
+  Bot,
   createBot,
   type CreateSlashApplicationCommand,
   Intents,
+  Interaction,
   InteractionResponseTypes,
   startBot,
 } from "https://deno.land/x/discordeno@17.1.0/mod.ts";
 
+// Cron job for periodic tasks
 Deno.cron("Continuous Request", "*/2 * * * *", () => {
   console.log("running...");
 });
@@ -21,39 +24,22 @@ if (!DISCORD_TOKEN || !GUILD_ID) {
 
 // Define commands
 const commands: CreateSlashApplicationCommand[] = [
-  {
-    name: "neko",
-    description: "responds with meow",
-  },
-  {
-    name: "japan",
-    description: "responds with the current time in Japan",
-  },
+  { name: "neko", description: "responds with meow" },
+  { name: "japan", description: "responds with the current time in Japan" },
   {
     name: "florida",
-    description: "responds with the current time in Florida",
+    description: "responds with the current time in Florida (Central Time)",
   },
-  {
-    name: "newyork",
-    description: "responds with the current time in New York",
-  },
-  {
-    name: "moufu",
-    description: "responds with a picture of a moufu",
-  },
-  {
-    name: "ikura",
-    description: "responds with the current price of ikura",
-  },
+  { name: "moufu", description: "responds with a picture of a moufu" },
+  { name: "ikura", description: "responds with the current price of ikura" },
 ];
 
-async function registerCommands(guildId: string) {
-  for (const command of commands) {
-    await bot.helpers.createGuildApplicationCommand(command, guildId);
-  }
+// Register slash commands
+const registerCommands = async (guildId: string): Promise<void> => {
   await bot.helpers.upsertGuildApplicationCommands(guildId, commands);
-}
+};
 
+// Create the bot
 const bot = createBot({
   token: DISCORD_TOKEN,
   intents: Intents.Guilds | Intents.GuildMessages | Intents.MessageContent,
@@ -64,114 +50,83 @@ const bot = createBot({
   },
 });
 
-//Handle text commands
-bot.events.messageCreate = async (b, message) => {
+// Handle text commands
+bot.events.messageCreate = async (bot, message): Promise<void> => {
   if (message.content === "!neko") {
-    await b.helpers.sendMessage(message.channelId, { content: "meow" });
+    await bot.helpers.sendMessage(message.channelId, { content: "meow" });
   } else {
-    console.log("unhandled message", message.content);
+    console.log("Unhandled message:", message.content);
   }
 };
 
+// Helper functions for slash command responses
+const sendTimeResponse = async (
+  bot: Bot,
+  interaction: Interaction,
+  timeZone: string,
+  location: string,
+): Promise<void> => {
+  const time = new Date().toLocaleString("en-US", { timeZone });
+  await bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+    type: InteractionResponseTypes.ChannelMessageWithSource,
+    data: { content: `The current time in ${location} is: ${time}` },
+  });
+};
+
+const sendImageResponse = async (
+  bot: Bot,
+  interaction: Interaction,
+  url: string,
+): Promise<void> => {
+  await bot.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+    type: InteractionResponseTypes.ChannelMessageWithSource,
+    data: { content: url },
+  });
+};
+
 // Handle slash commands
-bot.events.interactionCreate = async (b, interaction) => {
+bot.events.interactionCreate = async (bot, interaction): Promise<void> => {
   const commandName = interaction.data?.name;
-  if (commandName) {
-    switch (commandName) {
-      case "neko": {
-        await b.helpers.sendInteractionResponse(
-          interaction.id,
-          interaction.token,
-          {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: "meow",
-            },
-          },
-        );
-        break;
-      }
-      case "japan": {
-        await b.helpers.sendInteractionResponse(
-          interaction.id,
-          interaction.token,
-          {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: `The current time in Japan is: ${
-                new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" })
-              }`,
-            },
-          },
-        );
-        break;
-      }
-      case "florida": {
-        await b.helpers.sendInteractionResponse(
-          interaction.id,
-          interaction.token,
-          {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: `The current time in Florida is: ${
-                new Date().toLocaleString(
-                  "en-US",
-                  { timeZone: "America/New_York" },
-                )
-              }`,
-            },
-          },
-        );
-        break;
-      }
-      case "newyork": {
-        await b.helpers.sendInteractionResponse(
-          interaction.id,
-          interaction.token,
-          {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: `The current time in New York is: ${
-                new Date().toLocaleString(
-                  "en-US",
-                  { timeZone: "America/New_York" },
-                )
-              }`,
-            },
-          },
-        );
-        break;
-      }
-      case "moufu": {
-        await b.helpers.sendInteractionResponse(
-          interaction.id,
-          interaction.token,
-          {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: "https://gyazo.com/394c0fe3876bebb679ced189e0c4bc15",
-            },
-          },
-        );
-        break;
-      }
-      case "ikura": {
-        await b.helpers.sendInteractionResponse(
-          interaction.id,
-          interaction.token,
-          {
-            type: InteractionResponseTypes.ChannelMessageWithSource,
-            data: {
-              content: "https://gyazo.com/40d83420ad0240c53f30d2998b3d2b56",
-            },
-          },
-        );
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+  if (!commandName) return;
+
+  switch (commandName) {
+    case "neko":
+      await bot.helpers.sendInteractionResponse(
+        interaction.id,
+        interaction.token,
+        {
+          type: InteractionResponseTypes.ChannelMessageWithSource,
+          data: { content: "meow" },
+        },
+      );
+      break;
+
+    case "japan":
+      await sendTimeResponse(bot, interaction, "Asia/Tokyo", "Japan");
+      break;
+
+    case "florida":
+      await sendTimeResponse(bot, interaction, "America/Chicago", "Florida");
+      break;
+
+    case "moufu":
+      await sendImageResponse(
+        bot,
+        interaction,
+        "https://gyazo.com/394c0fe3876bebb679ced189e0c4bc15",
+      );
+      break;
+
+    case "ikura":
+      await sendImageResponse(
+        bot,
+        interaction,
+        "https://gyazo.com/40d83420ad0240c53f30d2998b3d2b56",
+      );
+      break;
+
+    default:
+      console.log("Unhandled slash command:", commandName);
   }
 };
 
