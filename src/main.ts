@@ -112,7 +112,7 @@ bot.events.interactionCreate = async (b, interaction) => {
               content: `The current time in Florida is: ${
                 new Date().toLocaleString(
                   "en-US",
-                  { timeZone: "America/New_York" },
+                  { timeZone: "America/Chicago" },
                 )
               }`,
             },
