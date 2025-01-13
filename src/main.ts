@@ -31,7 +31,7 @@ const commands: CreateSlashApplicationCommand[] = [
   },
   {
     name: "florida(central)",
-    description: "responds with the current time in Florida (Central Time)",
+    description: "responds with the current time in florida (Central Time)",
   },
   {
     name: "moufu",
